@@ -75,7 +75,6 @@ public class GameControllerScript : MonoBehaviour
 
                 int index = j * columns + i;
                 int id = locations[index];
-                Debug.Log($"{spriteHeight},{spriteWidth}");
                 gameImage.ChangeSprite(id, images[id], spriteWidth, spriteHeight);
                 float xPos = i * (spriteWidth + padding) - screenWidth / 2 + spriteWidth / 2;
                 float yPos = screenHeight / 2 - j * (spriteHeight + padding) - spriteHeight / 2;
@@ -116,6 +115,7 @@ public class GameControllerScript : MonoBehaviour
     {
         if (firstOpen.spriteId == secondOpen.spriteId) // Compares the two objects
         {
+            firstOpen.successfull();
             score++; // Add score
             scoreText.text = "Score: " + score;
         }
@@ -138,4 +138,5 @@ public class GameControllerScript : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene");
     }
+
 }

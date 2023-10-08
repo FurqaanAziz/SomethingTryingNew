@@ -7,12 +7,16 @@ public class MainImageScript : MonoBehaviour
 {
     [SerializeField] private GameObject image_unknown;
     [SerializeField] private GameControllerScript gameController;
-
+    [SerializeField] AudioClip cardFlip;
+    [SerializeField] AudioClip missMatched;
+    [SerializeField] AudioClip matched;
+    [SerializeField] AudioSource cardSounds;
     public void OnMouseDown()
     {
         if (image_unknown.activeSelf && gameController.canOpen)
         {
             image_unknown.GetComponent<DOTweenAnimation>().DOPlay();
+            cardSounds.PlayOneShot(cardFlip);
             gameController.imageOpened(this);
         }
     }
@@ -33,6 +37,11 @@ public class MainImageScript : MonoBehaviour
     public void Close()
     {
         image_unknown.SetActive(true); // Hide image
+        cardSounds.PlayOneShot(missMatched);
         image_unknown.GetComponent<DOTweenAnimation>().DORewind();
+    }
+    public void successfull()
+    {
+        cardSounds.PlayOneShot(matched);
     }
 }
