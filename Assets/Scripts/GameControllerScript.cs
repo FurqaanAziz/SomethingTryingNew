@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class GameControllerScript : MonoBehaviour
 {
-    public int columns = 4;
-    public int rows = 3;
+    public int columns;
+    public int rows;
     public float minPadding = 0.1f; // Minimum padding between sprites.
     public float maxPadding = 5f; // Maximum padding between sprites.
-    //public const float Xspace = 3f;
-    //public const float Yspace = -3f;
 
     [SerializeField] private MainImageScript startObject;
     [SerializeField] private Sprite[] images;
+    [SerializeField] GameObject mainScreen;
+    [SerializeField] GameObject gameOverScreen;
 
     private int[] Randomiser(int[] locations)
     {
@@ -28,7 +28,28 @@ public class GameControllerScript : MonoBehaviour
         return array;
     }
 
-    private void Start()
+    public void SelectMode(int modeno)
+    {
+        switch(modeno)
+        {
+            case 1:
+                columns = 2;
+                rows = 2;
+                break;
+            case 2:
+                columns = 3;
+                rows = 4;
+                break;
+            case 3:
+                columns = 4;
+                rows = 4;
+                break;
+        }
+        AtStart();
+        mainScreen.SetActive(false);
+    }
+
+    private void AtStart()
     {
         float screenHeight = (Camera.main.orthographicSize * 1.5f);
         float screenWidth = screenHeight * Camera.main.aspect;
@@ -51,9 +72,8 @@ public class GameControllerScript : MonoBehaviour
         int[] locations = new int[totalElements];
         for (int i = 0; i < totalElements; i++)
         {
-            locations[i] = i / 2; // This pattern repeats every 2 elements.
+            locations[i] = i / 2; 
         }
-        // int[] locations = { 0, 0, 1, 1, 2, 2, 3, 3 , 4, 4 ,5,5 };
         locations = Randomiser(locations);
 
         Vector3 startPosition = startObject.transform.position;
@@ -115,7 +135,7 @@ public class GameControllerScript : MonoBehaviour
     {
         if (firstOpen.spriteId == secondOpen.spriteId) // Compares the two objects
         {
-            firstOpen.successfull();
+            firstOpen.Successfull();
             score++; // Add score
             scoreText.text = "Score: " + score;
         }
@@ -130,6 +150,13 @@ public class GameControllerScript : MonoBehaviour
         attempts++;
         attemptsText.text = "Attempts: " + attempts;
 
+        
+        if(score == rows*columns/2)
+        {
+            firstOpen.GameOver();
+            gameOverScreen.SetActive(true);
+            Debug.Log("Game Over");
+        }
         firstOpen = null;
         secondOpen = null;
     }

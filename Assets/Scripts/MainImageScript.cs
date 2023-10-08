@@ -10,6 +10,7 @@ public class MainImageScript : MonoBehaviour
     [SerializeField] AudioClip cardFlip;
     [SerializeField] AudioClip missMatched;
     [SerializeField] AudioClip matched;
+    [SerializeField] AudioClip gameOver;
     [SerializeField] AudioSource cardSounds;
     public void OnMouseDown()
     {
@@ -40,8 +41,12 @@ public class MainImageScript : MonoBehaviour
         cardSounds.PlayOneShot(missMatched);
         image_unknown.GetComponent<DOTweenAnimation>().DORewind();
     }
-    public void successfull()
+    public void Successfull()
     {
         cardSounds.PlayOneShot(matched);
+    }
+    public void GameOver()
+    {
+        cardSounds.PlayOneShot(gameOver);
     }
 }
